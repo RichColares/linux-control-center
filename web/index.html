@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Linux Gaming Control Center</title>
+    <!-- Google Fonts for futuristic cyberpunk aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- TOP LOGO & TABS SYSTEM -->
+        <header class="main-header">
+            <div class="logo-area">
+                <div class="cyber-badge">PRO-GAMING</div>
+                <h1>LINUX GAMING CONTROL CENTER</h1>
+            </div>
+            
+            <!-- Sleek Tab Navigation -->
+            <nav class="nav-tabs">
+                <button class="tab-btn active" data-tab="tab-dashboard">PAINEL GERAL</button>
+                <button class="tab-btn" data-tab="tab-benchmarks">DESEMPENHO & BENCHMARKS</button>
+                <button class="tab-btn" data-tab="tab-proton">GAMING / PROTON</button>
+                <button class="tab-btn" data-tab="tab-terminal">TERMINAL</button>
+            </nav>
+            
+            <div class="header-badges">
+                <div class="badge temp-badge" id="cpu-temp-badge">
+                    <span class="dot-temp" id="temp-dot"></span> <span id="header-cpu-temp">0.0°C</span>
+                </div>
+                <div class="badge status-badge green" id="system-status-badge">
+                    <span class="pulse"></span> STABLE
+                </div>
+            </div>
+        </header>
+
+        <!-- TAB CONTENT 1: DASHBOARD -->
+        <div class="tab-content active" id="tab-dashboard">
+            <div class="dashboard-grid">
+                
+                <!-- COLUMN 1: SYSTEM RESOURCES -->
+                <div class="grid-column">
+                    <!-- CPU CARD -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>PROCESSADOR (CPU)</h2>
+                            <span class="card-subtitle" id="dashboard-cpu-model">...</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="gauge-section">
+                                <div class="circle-progress-container large">
+                                    <svg class="circle-svg" viewBox="0 0 100 100">
+                                        <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="circle-fg stroke-blue" id="cpu-circle" cx="50" cy="50" r="40" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;"></circle>
+                                    </svg>
+                                    <div class="circle-text">
+                                        <span class="number" id="cpu-percent">0</span>
+                                        <span class="unit">%</span>
+                                    </div>
+                                    <div class="gauge-label">USO DA CPU</div>
+                                </div>
+
+                                <div class="circle-progress-container large">
+                                    <svg class="circle-svg" viewBox="0 0 100 100">
+                                        <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="circle-fg" id="temp-circle" cx="50" cy="50" r="40" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;"></circle>
+                                    </svg>
+                                    <div class="circle-text">
+                                        <span class="number" id="cpu-temp-text">0</span>
+                                        <span class="unit">°C</span>
+                                    </div>
+                                    <div class="gauge-label">TEMP CORE</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Graph -->
+                            <div class="graph-container">
+                                <span class="graph-title">HISTÓRICO DE CPU</span>
+                                <svg class="graph-svg" id="cpu-graph-svg" viewBox="0 0 300 65" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="cpu-grad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.3"/>
+                                            <stop offset="100%" stop-color="#00f0ff" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path class="graph-area" fill="url(#cpu-grad)" d="M0,65 L300,65 Z"></path>
+                                    <path class="graph-line stroke-blue" d=""></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RAM CARD -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>MEMÓRIA RAM</h2>
+                            <span class="card-subtitle" id="ram-specs-short">...</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="gauge-section">
+                                <div class="circle-progress-container large">
+                                    <svg class="circle-svg" viewBox="0 0 100 100">
+                                        <circle class="circle-bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="circle-fg stroke-pink" id="ram-circle" cx="50" cy="50" r="40" style="stroke-dasharray: 251.2; stroke-dashoffset: 251.2;"></circle>
+                                    </svg>
+                                    <div class="circle-text">
+                                        <span class="number" id="ram-percent">0</span>
+                                        <span class="unit">%</span>
+                                    </div>
+                                    <div class="gauge-label">USO DA RAM</div>
+                                </div>
+                                <div class="quick-stats-vertical">
+                                    <div class="stat-item-horizontal">
+                                        <span class="label">Em Uso</span>
+                                        <span class="value color-pink" id="ram-used">0.0 GB</span>
+                                    </div>
+                                    <div class="stat-item-horizontal">
+                                        <span class="label">Livre / Cache</span>
+                                        <span class="value" id="ram-avail">0.0 GB</span>
+                                    </div>
+                                    <div class="stat-item-horizontal">
+                                        <span class="label">Total</span>
+                                        <span class="value" id="ram-total">0.0 GB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="graph-container">
+                                <span class="graph-title">HISTÓRICO DE RAM</span>
+                                <svg class="graph-svg" id="ram-graph-svg" viewBox="0 0 300 65" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="ram-grad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#ff007f" stop-opacity="0.3"/>
+                                            <stop offset="100%" stop-color="#ff007f" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path class="graph-area" fill="url(#ram-grad)" d="M0,65 L300,65 Z"></path>
+                                    <path class="graph-line stroke-pink" d=""></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: TOP PROCESSES & NETWORK -->
+                <div class="grid-column">
+                    <!-- TOP PROCESSES CARD -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>PROCESSOS ATIVOS</h2>
+                            <span class="card-subtitle">Ordenado por uso de RAM</span>
+                        </div>
+                        <div class="card-body" style="padding: 18px 24px;">
+                            <div class="process-list" id="process-list-container">
+                                <!-- Populated dynamically -->
+                                <div class="process-loading">Buscando processos...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NETWORK CARD -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>REDE E CONEXÃO</h2>
+                            <span class="card-subtitle" id="net-ip-address">IP: 127.0.0.1</span>
+                        </div>
+                        <div class="card-body">
+                            <!-- Net Diagnostics Grid -->
+                            <div class="net-grid-diagnostics">
+                                <div class="net-diag-box">
+                                    <span class="label">LATÊNCIA (PING)</span>
+                                    <span class="value color-yellow" id="net-ping-val">0.0 ms</span>
+                                </div>
+                                <div class="net-diag-box">
+                                    <span class="label">JITTER (ESTABIL.)</span>
+                                    <span class="value" id="net-jitter-val">0.0 ms</span>
+                                </div>
+                                <div class="net-diag-box">
+                                    <span class="label">PERDA DE PACOTES</span>
+                                    <span class="value" id="net-loss-val">0.0%</span>
+                                </div>
+                                <div class="net-diag-box">
+                                    <span class="label">SINAL WI-FI</span>
+                                    <span class="value" id="net-wifi-val">100%</span>
+                                </div>
+                            </div>
+
+                            <div class="net-speeds-horizontal">
+                                <div class="speed-box-line">
+                                    <span class="dir-symbol">⬇️</span>
+                                    <span class="dir-text">Download:</span>
+                                    <span class="dir-val" id="dashboard-net-down">0.0 KB/s</span>
+                                </div>
+                                <div class="speed-box-line">
+                                    <span class="dir-symbol">⬆️</span>
+                                    <span class="dir-text">Upload:</span>
+                                    <span class="dir-val" id="dashboard-net-up">0.0 KB/s</span>
+                                </div>
+                            </div>
+
+                            <div class="graph-container">
+                                <span class="graph-title">TRÁFEGO DE REDE (DOWNLOAD)</span>
+                                <svg class="graph-svg" id="net-graph-svg" viewBox="0 0 300 65" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="net-grad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#ffb700" stop-opacity="0.3"/>
+                                            <stop offset="100%" stop-color="#ffb700" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path class="graph-area" fill="url(#net-grad)" d="M0,65 L300,65 Z"></path>
+                                    <path class="graph-line stroke-yellow" d=""></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 3: STORAGE, BATTERY & SPECS -->
+                <div class="grid-column">
+                    <!-- STORAGE CARD -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>ARMAZENAMENTO</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="storage-gauge-wrapper">
+                                <div class="storage-label-row">
+                                    <span class="label">Disco Principal (/)</span>
+                                    <span class="value" id="storage-dashboard-text">0 GB / 0 GB</span>
+                                </div>
+                                <div class="progress-bar-bg-new">
+                                    <div class="progress-bar-fill-new stroke-blue" id="storage-dashboard-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BATTERY CARD (Only shows if laptop/available) -->
+                    <div class="cyber-card" id="battery-monitoring-card" style="display: none;">
+                        <div class="card-header">
+                            <h2>MONITOR DE BATERIA</h2>
+                            <span class="badge accent-blue" id="battery-power-mode">Equilibrado</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="battery-flex-row">
+                                <div class="battery-status-circle">
+                                    <span class="val-num" id="battery-percent-text">100%</span>
+                                    <span class="val-label" id="battery-plugged-state">Descarregando</span>
+                                </div>
+                                <div class="battery-stats-vertical">
+                                    <div class="stat-line">
+                                        <span class="lbl">Consumo:</span>
+                                        <span class="val" id="battery-watt-val">0.0 W</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span class="lbl">Ciclos de Carga:</span>
+                                        <span class="val" id="battery-cycles-val">0</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span class="lbl">Saúde da Bateria:</span>
+                                        <span class="val color-green" id="battery-health-val">100%</span>
+                                    </div>
+                                    <div class="stat-line">
+                                        <span class="lbl">Tempo Restante:</span>
+                                        <span class="val" id="battery-time-val">Calculando...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SYSTEM GENERAL INFO -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>DETALHES DO SISTEMA</h2>
+                        </div>
+                        <div class="card-body" style="gap: 12px;">
+                            <div class="sysinfo-list">
+                                <div class="sysinfo-row">
+                                    <span class="lbl">Distribuição</span>
+                                    <span class="val" id="dash-sys-os">Linux Mint</span>
+                                </div>
+                                <div class="sysinfo-row">
+                                    <span class="lbl">Kernel</span>
+                                    <span class="val" id="dash-sys-kernel">...</span>
+                                </div>
+                                <div class="sysinfo-row">
+                                    <span class="lbl">Resolução Ativa</span>
+                                    <span class="val" id="dash-sys-res">...</span>
+                                </div>
+                                <div class="sysinfo-row">
+                                    <span class="lbl">Tempo Ativo (Uptime)</span>
+                                    <span class="val" id="dash-sys-uptime">0h 0m</span>
+                                </div>
+                                <div class="sysinfo-row">
+                                    <span class="lbl">Frequência GPU</span>
+                                    <span class="val" id="dash-gpu-freq">0 MHz</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 2: DESEMPENHO & BENCHMARKS -->
+        <div class="tab-content" id="tab-benchmarks">
+            <div class="dashboard-grid">
+                
+                <!-- COLUMN 1: GPU WEBGL STRESS TEST -->
+                <div class="grid-column" style="grid-column: span 2;">
+                    <div class="cyber-card header-glowing-green">
+                        <div class="card-header">
+                            <div class="header-main-title">
+                                <h2>BENCHMARK GRÁFICO (GPU WEBGL)</h2>
+                                <span class="badge accent-green">Intel Iris Xe Acceleration</span>
+                            </div>
+                            <div class="fps-realtime-badge">
+                                <span class="pulse green" id="fps-pulse"></span>
+                                <span id="fps-counter-badge">60 FPS</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="gpu-benchmark-layout">
+                                <!-- Rendering viewport -->
+                                <div class="viewport-wrapper">
+                                    <div class="render-overlay" id="render-overlay">
+                                        <h3>WEBGL STRESS BENCHMARK</h3>
+                                        <p>Roda cálculos de matrizes matemáticas em tempo real diretamente na GPU integrada Intel Iris Xe.</p>
+                                        <button class="start-bench-btn" id="btn-stress-webgl">INICIAR TESTE</button>
+                                    </div>
+                                    <canvas id="gpu-canvas"></canvas>
+                                </div>
+
+                                <!-- Configurations and Stats -->
+                                <div class="benchmark-controls-panel">
+                                    <div class="metric-mini-row">
+                                        <div class="mini-box">
+                                            <span class="lbl">LATÊNCIA DO FRAME</span>
+                                            <span class="val color-green" id="frame-time-val">16.7 ms</span>
+                                        </div>
+                                        <div class="mini-box">
+                                            <span class="lbl">ESTABILIDADE 1% LOW</span>
+                                            <span class="val" id="fps-low-val">0 FPS</span>
+                                        </div>
+                                        <div class="mini-box">
+                                            <span class="lbl">FREQUÊNCIA ATIVA</span>
+                                            <span class="val color-blue" id="gpu-clock-val">0 MHz</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-box-group">
+                                        <span class="control-label">Ajuste de Carga de Estresse:</span>
+                                        <div class="options-flex">
+                                            <button class="option-btn active" data-particles="5000">5k (Leve)</button>
+                                            <button class="option-btn" data-particles="25000">25k (Médio)</button>
+                                            <button class="option-btn" data-particles="100000">100k (Pesado)</button>
+                                            <button class="option-btn" data-particles="300000">300k (Extremo)</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="control-box-group">
+                                        <span class="control-label">Fórmula Física (Shader):</span>
+                                        <select class="cyber-select" id="render-mode-select">
+                                            <option value="vortex">Vórtice Relativístico (Espiral 3D)</option>
+                                            <option value="plasma">Plasma Quântico (Ondas Senoidais)</option>
+                                            <option value="chaos">Caos Entrópico (Browniano Turbulento)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stability graphic -->
+                            <div class="graph-container" style="margin-top: 15px;">
+                                <span class="graph-title">ESTABILIDADE DE QUADROS (FRAME LATENCY EM MS)</span>
+                                <svg class="graph-svg" id="fps-graph-svg" viewBox="0 0 600 80" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="fps-grad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#39ff14" stop-opacity="0.3"/>
+                                            <stop offset="100%" stop-color="#39ff14" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path class="graph-area" fill="url(#fps-grad)" d="M0,80 L600,80 Z"></path>
+                                    <path class="graph-line stroke-green" d=""></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: CPU STRESS & MONITORING -->
+                <div class="grid-column">
+                    <!-- CPU STRESS TEST CARD -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>TESTE DE ESTRESSE DA CPU</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-desc">Ativa um algoritmo matemático multithreaded para saturar todos os núcleos do processador a 100%.</p>
+                            
+                            <button class="stress-btn-toggle" id="btn-cpu-stress">
+                                <span class="btn-indicator"></span>
+                                <span class="btn-text">INICIAR TESTE DA CPU</span>
+                            </button>
+
+                            <div class="throttling-monitor">
+                                <span class="label">MONITOR DE THROTTLING TÉRMICO</span>
+                                <div class="throttling-status" id="throttling-indicator">
+                                    <span class="status-dot"></span>
+                                    <span class="status-text">ESTÁVEL (SEM THROTTLING)</span>
+                                </div>
+                                <p class="small-info">Se o processador exceder limites térmicos, a velocidade do clock é reduzida para proteção do chip.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CPU Core Utilizations -->
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>USO DE CADA NÚCLEO</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="cores-grid" id="cores-grid-bench">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 3: GAMING & PROTON -->
+        <div class="tab-content" id="tab-proton">
+            <div class="dashboard-grid">
+                
+                <!-- GAMING CONFIG CARD -->
+                <div class="grid-column" style="grid-column: span 2;">
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>PAINEL DE JOGOS & RUNTIMES LINUX</h2>
+                            <span class="card-subtitle">Status das APIs gráficas e drivers para jogos</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="gaming-status-dashboard">
+                                <div class="status-grid-item">
+                                    <span class="label">AMBIENTE PROTON (STEAM)</span>
+                                    <span class="value" id="game-status-proton">Carregando...</span>
+                                    <p class="desc">Camada de compatibilidade para rodar jogos de Windows no Linux Mint.</p>
+                                </div>
+                                <div class="status-grid-item">
+                                    <span class="label">API VULKAN</span>
+                                    <span class="value color-green" id="game-status-vulkan">Carregando...</span>
+                                    <p class="desc">Driver gráfico 3D de alta performance e baixa latência.</p>
+                                </div>
+                                <div class="status-grid-item">
+                                    <span class="label">MANGOHUD STATUS</span>
+                                    <span class="value" id="game-status-mangohud">Carregando...</span>
+                                    <p class="desc">Overlay de telemetria FPS, CPU e RAM em tela cheia.</p>
+                                </div>
+                                <div class="status-grid-item">
+                                    <span class="label">GAMEMODE (FERAL INTERACTIVE)</span>
+                                    <span class="value" id="game-status-gamemode">Carregando...</span>
+                                    <p class="desc">Otimizador que ajusta CPU, prioridade de IO e GPU para jogos.</p>
+                                </div>
+                                <div class="status-grid-item" style="grid-column: span 2;">
+                                    <span class="label">COMPATIBILIDADE DXVK (DIRECTX 9/10/11 → VULKAN)</span>
+                                    <span class="value color-blue" id="game-status-dxvk">Carregando...</span>
+                                    <p class="desc">Tradutor em tempo real que converte chamadas DirectX para Vulkan de forma nativa.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MANGOHUD CONFIG & LAUNCH COMMANDS -->
+                <div class="grid-column">
+                    <div class="cyber-card">
+                        <div class="card-header">
+                            <h2>ATIVAR OVERLAY DE FPS</h2>
+                        </div>
+                        <div class="card-body">
+                            <p class="gaming-desc">Copie o comando e adicione nos parâmetros de inicialização de seus jogos para obter o monitoramento em tela cheia.</p>
+                            <div class="code-box">
+                                <code id="mangohud-cmd-bench">mangohud %command%</code>
+                                <button class="copy-btn" id="btn-copy-mangohud-bench">COPIAR</button>
+                            </div>
+                            <span class="copied-indicator" id="copy-success-bench">Copiado!</span>
+
+                            <div class="instruction-box-gaming">
+                                <span class="title">Configuração Avançada</span>
+                                <p>Para rodar otimizações com o Feral GameMode e o MangoHud simultaneamente, use o comando:</p>
+                                <code class="small-code">gamemoderun mangohud %command%</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB CONTENT 4: TERMINAL -->
+        <div class="tab-content" id="tab-terminal">
+            <div class="cyber-card" style="min-height: 580px;">
+                <div class="card-header">
+                    <div class="header-main-title">
+                        <h2>MINI TERMINAL EMBUTIDO</h2>
+                        <span class="card-subtitle">Execução rápida de comandos de sistema no diretório pessoal</span>
+                    </div>
+                    <span class="badge accent-blue">Terminal Ativo</span>
+                </div>
+                <div class="card-body" style="padding: 0; display: flex; flex-direction: column; overflow: hidden;">
+                    
+                    <!-- Quick commands bar -->
+                    <div class="terminal-quick-actions">
+                        <span class="title">COMANDOS SUGERIDOS:</span>
+                        <button class="cmd-shortcut-btn" data-cmd="neofetch">neofetch</button>
+                        <button class="cmd-shortcut-btn" data-cmd="gamemoded -s">Status GameMode</button>
+                        <button class="cmd-shortcut-btn" data-cmd="lspci | grep -i vga">GPU Hardware</button>
+                        <button class="cmd-shortcut-btn" data-cmd="vulkaninfo --summary">Resumo Vulkan</button>
+                        <button class="cmd-shortcut-btn" data-cmd="ping -c 3 1.1.1.1">Testar Latência</button>
+                        <button class="cmd-shortcut-btn" data-cmd="uname -a">Kernel Detalhado</button>
+                    </div>
+
+                    <!-- Console output window -->
+                    <div class="terminal-console" id="terminal-console-output">
+                        <div class="terminal-line system-msg">Linux Gaming Control Center Console. Digite comandos ou clique nos atalhos acima.</div>
+                        <div class="terminal-line system-msg">Diretório ativo: ~ (home)</div>
+                    </div>
+
+                    <!-- Input line -->
+                    <div class="terminal-input-row">
+                        <span class="terminal-prompt">ricardo@mint:~$</span>
+                        <input type="text" class="terminal-input" id="terminal-command-input" placeholder="Digite seu comando e pressione Enter..." autocomplete="off">
+                        <button class="terminal-send-btn" id="btn-terminal-send">EXECUTAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP JAVASCRIPT -->
+    <script src="script.js"></script>
+</body>
+</html>

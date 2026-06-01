@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Linux Control Center
+Comment=Monitor de RAM/CPU e FPS para Linux Mint
+Exec=sh -c "$(dirname %k)/run.sh"
+Icon=utilities-system-monitor
+Terminal=false
+Type=Application
+Categories=System;Monitor;Settings;
+StartupNotify=true
